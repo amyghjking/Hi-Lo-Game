@@ -6,49 +6,54 @@ class HiLoGame
     # Constructor to initialise the class with a maximum number of guesses
     def initialize(max_guesses)
 	@max_guesses = max_guesses
+	@guesses_left = @max_guesses
 	@already_guessed = Array.new
-	@random_num
-	@has_won = false
-    end
-
-    # The game is started
-    def play
-	welcome
 	@random_num = get_random_num
-
-	# Gives the user max number of guesses
-	for i in 0...@max_guesses
-	    if @has_won
-		print_has_won
-		return
-	    end
-
-	    print_guesses_left(i)
-	    guess_a_number
-	end
-	
-	if @has_won
-	    print_has_won
-	    return
-	end
-	
-	print_lost_game
-    end
-
-    # Welcome message for the game
-    def welcome
-	puts "Welcome to the Hi-Lo game.\nGuess a random whole number from 1 to 100 (inclusive)."
-	puts "You will have a total of #{@max_guesses} guesses.\nYou cannot guess the same number more than once."
-	puts ""	
+	welcome
     end
 
     def get_random_num
 	random_num = rand(1..100)
     end
 
-    def print_guesses_left(attempt_number)
-	guesses_left = @max_guesses - attempt_number
-	puts "You have #{guesses_left} guesses left.\nPlease guess a whole number from 1 to 100 (inclusive)."
+    # Welcome message for the game
+    def welcome
+	puts "Welcome to the Hi-Lo game.\nGuess a random whole number from 1 to 100 (inclusive)."
+	puts "You will have a total of #{@max_guesses} guesses.\nYou cannot guess the same number more than once."
+	puts ""
+    end
+
+    # The game is started
+    def play
+
+	# Gives the user max number of guesses
+	while game_running?
+	    print_guesses_left
+	    guess = guess_a_number
+	    check_guess(guess)
+	    @guesses_left -= 1
+
+	    if has_won?(guess)
+	        print_has_won
+	    	return
+	    end
+	end
+	
+	print_lost_game
+    end
+
+    # Returns true if there are turns left
+    def game_running?
+	@guesses_left > 0
+    end
+
+    # Returns true if guess equals the random number
+    def has_won?(guess)
+	guess == @random_num
+    end
+
+    def print_guesses_left
+	puts "You have #{@guesses_left} guesses left.\nPlease guess a whole number from 1 to 100 (inclusive)."
     end
 
     # Allows user to guess number and validates input by calling validate_guess
@@ -56,8 +61,7 @@ class HiLoGame
 	guess = gets
 	guess = validate_guess(guess)
 	@already_guessed.append(guess)
-
-	check_guess(guess)
+	guess
     end
  
     # Checks user input is a whole number between the bounds and hasn't already been guessed
@@ -86,9 +90,7 @@ class HiLoGame
 
     # Checks if the guess is correct
     def check_guess(guess)
-	if guess == @random_num
-	    @has_won = true
-	elsif guess < @random_num
+	if guess < @random_num
 	    puts "\nYour guess was too low!"
 	elsif guess > @random_num
 	    puts "\nYour guess was too high!"
