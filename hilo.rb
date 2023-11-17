@@ -92,7 +92,7 @@ class HiLoGame
     @already_guessed.include?(guess.to_i)
   end
 
-  # Checks if the guess is correct
+  # Checks if the guess is too high or too low
   def check_guess(guess)
     if guess < @random_num
       puts "\nYour guess was too low!"
