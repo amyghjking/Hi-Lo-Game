@@ -41,7 +41,7 @@ class HiLoGame
     guesses_left > 0 && !has_won?
   end
 
-  # Returns true if the random number has been guesses
+  # Returns true if the random number has been guessed
   def has_won?
     @already_guessed.include?(@random_num)
   end
