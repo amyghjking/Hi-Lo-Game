@@ -14,13 +14,13 @@ class HiLoGame
   def play
     welcome
 
-    begin
+    while game_running?
       print_guesses_left
       guess = guess_a_number
       check_guess(guess)
-    end until !game_running?(guess)
+    end
 
-    finish_game(guess)
+    finish_game
   end    
 
   private
@@ -36,9 +36,9 @@ class HiLoGame
     puts ""
   end
 
-  # Returns true if there are turns left
-  def game_running?(guess)
-    guesses_left > 0 && guess != @random_num
+  # Returns true if there are turns left and the number hasn't been guessed
+  def game_running?
+    guesses_left > 0 && !@already_guessed.include?(@random_num)
   end
 
   # Returns true if guess equals the random number
@@ -97,8 +97,8 @@ class HiLoGame
   end
 
   # Checks if the user lost or won after the game has finished running
-  def finish_game(guess)
-    if guess == @random_num
+  def finish_game
+    if @already_guessed.include?(@random_num)
       print_has_won
     else
       print_lost_game
