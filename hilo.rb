@@ -38,12 +38,12 @@ class HiLoGame
 
   # Returns true if there are turns left and the number hasn't been guessed
   def game_running?
-    guesses_left > 0 && !@already_guessed.include?(@random_num)
+    guesses_left > 0 && !has_won?
   end
 
-  # Returns true if guess equals the random number
-  def has_won?(guess)
-    guess == @random_num
+  # Returns true if the random number has been guesses
+  def has_won?
+    @already_guessed.include?(@random_num)
   end
 
   def print_guesses_left
