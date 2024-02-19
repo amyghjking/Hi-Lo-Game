@@ -96,9 +96,9 @@ class HiLoGame
     end
   end
 
-  # Checks if the user lost or won after the game has finished running
+  # Checks if the user lost or won after the game has finished running and prints the corresponding message
   def finish_game
-    if @already_guessed.include?(@random_num)
+    if has_won?
       print_has_won
     else
       print_lost_game
